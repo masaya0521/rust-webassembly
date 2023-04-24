@@ -1,19 +1,32 @@
 mod utils;
 
 use wasm_bindgen::prelude::*;
-
-// When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
-// allocator.
-#[cfg(feature = "wee_alloc")]
-#[global_allocator]
-static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
-
 #[wasm_bindgen]
-extern {
-    fn alert(s: &str);
+pub struct Calculation {
+    contents: i32,
 }
 
 #[wasm_bindgen]
-pub fn greet() {
-    alert("Hello, rust!");
+impl Calculation {
+    #[wasm_bindgen(constructor)]
+    pub fn new() -> Calculation {
+        Calculation { contents: 0 }
+    }
+
+    pub fn add(&mut self, x: i32) {
+        self.contents += x;
+    }
+
+    pub fn subtract(&mut self, x: i32) {
+        self.contents -= x;
+    }
+
+    pub fn get_contents(&self) -> i32 {
+        self.contents
+    }
+}
+
+#[wasm_bindgen(js_name = doTheThing)]
+pub fn do_the_thing() -> u32 {
+    42
 }
